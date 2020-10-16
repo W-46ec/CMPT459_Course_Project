@@ -6,7 +6,7 @@ import pandas as pd
 
 # Input/output data files
 # input_file_cases = "processed_individual_cases_Sep20th2020.csv"
-input_file_locations = "processed_location_Sep20th2020.csv"
+input_file_locations = "1.3_locations_removed_outliers.csv"
 output_file_cases = "1.4_processed_location_Sep20th2020.csv"
 
 # Read data from file
