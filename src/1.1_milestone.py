@@ -11,11 +11,10 @@ sns.set()
 #pd.set_option('display.max_rows', 190)
 
 def main():
-    input_file = sys.argv[1]
-    input_file_2 = sys.argv[2]
-    
-    cases = pd.read_csv(input_file)
-    locations = pd.read_csv(input_file_2)
+    #input_file = sys.argv[1]
+    #input_file_2 = sys.argv[2]
+    cases = pd.read_csv('processed_individual_cases_Sep20th2020.csv')
+    locations = pd.read_csv('processed_location_Sep20th2020.csv')
 
     # 1.1 - Exploratory Data Analysis
     # Missing Value Counts
