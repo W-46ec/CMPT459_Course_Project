@@ -15,7 +15,7 @@ locations = pd.read_csv(input_file_locations)
 individual_cases = individual_cases.merge(
     locations, 
     left_on = ['province', 'country'], 
-    right_on = ['Province_State', 'Country_Region']
+    right_on = ['Country_Region']
 )
 
 individual_cases.to_csv(output_file_cases, index = False, compression = 'gzip')
