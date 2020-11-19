@@ -14,14 +14,15 @@ def main():
     # remove this section when the merge is fixed
     data['province'] = data['province'].fillna('Unknown')
     data['sex'] = data['sex'].fillna('Unknown')
+
+    age_avg = data[data['age'].notna()]['age'].mean()
+    data['age'][data['age'].isna()] = age_avg
     
-    '''
     #print(data['province'].unique())
     # check NaN counts
     print('NaN count:')
     print(data.isna().sum())
     print(data.columns)
-    '''
     
     output_file = "../dataset/2.0_cases_cleaned.csv.gz"
     data.to_csv(output_file, index = False, compression = 'gzip')
