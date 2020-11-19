@@ -31,11 +31,23 @@ def main():
     
     # classify with KNN model
     knn_model = make_pipeline(
-        KNeighborsClassifier(n_neighbors=20)
-        )  
+        KNeighborsClassifier()
+        )
+    
+    # classify with ADABoost
+    ada_model = make_pipeline(
+        AdaBoostClassifier()
+        )
     
     nb_model.fit(X_train, y_train)
-    #print("Validation score:", nb_model.score(X_valid, y_valid))  
+    print("Validation score (NB):", nb_model.score(X_valid, y_valid))  
+    
+    knn_model.fit(X_train, y_train)
+    print("Validation score (KNN):", knn_model.score(X_valid, y_valid)) 
+    
+    ada_model.fit(X_train, y_train)
+    print("Validation score (ADA):", ada_model.score(X_valid, y_valid))  
+    
     
 if __name__ == '__main__':
     main()    
