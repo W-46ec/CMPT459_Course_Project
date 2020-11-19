@@ -2,6 +2,8 @@
 import numpy as np
 import pandas as pd
 import pickle
+from sklearn.pipeline import make_pipeline
+from sklearn.neighbors import KNeighborsClassifier
 
 
 def main():
@@ -15,11 +17,13 @@ def main():
     y_train = pd.read_csv(y_train_inputfile).transpose().values[0]
     y_valid = pd.read_csv(y_valid_inputfile).transpose().values[0]
 
-    knn_pkl = '../models/knn_classifier.pkl'
-    knn_model = pickle.load(open(knn_pkl, 'rb'))
+    # classify with KNN model
+    knn_model = make_pipeline(
+        KNeighborsClassifier()
+    )
+    knn_model.fit(X_train, y_train)
 
-    print("Validation score on training dataset (KNN):", knn_model.score(X_train, y_train))
-    print("Validation score on testing dataset (KNN):", knn_model.score(X_valid, y_valid))
+    print("Validation score (KNN):", knn_model.score(X_valid, y_valid))
 
 if __name__ == '__main__':
     main()

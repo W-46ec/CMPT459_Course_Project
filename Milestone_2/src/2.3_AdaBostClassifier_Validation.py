@@ -18,8 +18,7 @@ def main():
     ada_pkl = '../models/ada_classifier.pkl'
     ada_model = pickle.load(open(ada_pkl, 'rb'))
 
-    print("Validation score on training dataset (ADA):", ada_model.score(X_train, y_train))
-    print("Validation score on testing dataset (ADA):", ada_model.score(X_valid, y_valid))
+    print("Validation score (ADA):", ada_model.score(X_valid, y_valid))
 
 if __name__ == '__main__':
     main()

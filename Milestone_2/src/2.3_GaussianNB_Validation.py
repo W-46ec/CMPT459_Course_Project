@@ -18,8 +18,7 @@ def main():
     nb_pkl = '../models/nb_classifier.pkl'
     nb_model = pickle.load(open(nb_pkl, 'rb'))
 
-    print("Validation score on training dataset (NB):", nb_model.score(X_train, y_train))
-    print("Validation score on testing dataset (NB):", nb_model.score(X_valid, y_valid))
+    print("Validation score (NB):", nb_model.score(X_valid, y_valid))
 
 if __name__ == '__main__':
     main()
