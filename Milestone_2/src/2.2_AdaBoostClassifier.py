@@ -23,8 +23,6 @@ def main():
     )
 
     ada_model.fit(X_train, y_train)
-    print("Validation score on training dataset (ADA):", ada_model.score(X_train, y_train))
-    print("Validation score on testing dataset (ADA):", ada_model.score(X_valid, y_valid))
 
     ada_pkl = '../models/ada_classifier.pkl'
     pickle.dump(ada_model, open(ada_pkl, 'wb'))
