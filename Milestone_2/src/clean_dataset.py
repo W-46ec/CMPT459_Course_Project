@@ -30,7 +30,7 @@ def main():
     print(data.columns)
     
     output_file = "../dataset/2.0_cases_cleaned.csv.gz"
-    # data.to_csv(output_file, index = False, compression = 'gzip')
+    data.to_csv(output_file, index = False, compression = 'gzip')
     
 if __name__ == '__main__':
     main()    
