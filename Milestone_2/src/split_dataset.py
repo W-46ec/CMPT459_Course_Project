@@ -50,8 +50,8 @@ def main():
     
     nb_pkl = '../models/nb_classifier.pkl'
     pickle.dump(nb_model, open(nb_pkl, 'wb'))
-    knn_pkl = '../models/knn_classifier.pkl'
-    pickle.dump(knn_model, open(knn_pkl, 'wb'))
+    #knn_pkl = '../models/knn_classifier.pkl'
+    #pickle.dump(knn_model, open(knn_pkl, 'wb'))
     ada_pkl = '../models/ada_classifier.pkl'
     pickle.dump(ada_model, open(ada_pkl, 'wb'))
     
