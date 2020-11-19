@@ -48,6 +48,13 @@ def main():
     ada_model.fit(X_train, y_train)
     print("Validation score (ADA):", ada_model.score(X_valid, y_valid))  
     
+    nb_pkl = '../models/nb_classifier.pkl'
+    pickle.dump(nb_model, open(nb_pkl, 'wb'))
+    knn_pkl = '../models/knn_classifier.pkl'
+    pickle.dump(knn_model, open(knn_pkl, 'wb'))
+    ada_pkl = '../models/ada_classifier.pkl'
+    pickle.dump(ada_model, open(ada_pkl, 'wb'))
     
+
 if __name__ == '__main__':
     main()    
