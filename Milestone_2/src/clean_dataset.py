@@ -9,14 +9,19 @@ def main():
     # prune redundant & irrelevant features
     data = data.drop(['Province_State', 'Country_Region', 'Lat', 'Long_'], axis=1)
     data = data.drop(['additional_information', 'source', 'Last_Update', 'Combined_Key'], axis=1)
+    data = data.drop(['date_confirmation'], axis=1)
     
     # remove this section when the merge is fixed
     data['province'] = data['province'].fillna('Unknown')
+    data['sex'] = data['sex'].fillna('Unknown')
     
+    '''
+    #print(data['province'].unique())
     # check NaN counts
     print('NaN count:')
     print(data.isna().sum())
     print(data.columns)
+    '''
     
     output_file = "../dataset/2.0_cases_cleaned.csv.gz"
     data.to_csv(output_file, index = False, compression = 'gzip')

@@ -15,15 +15,11 @@ def main():
     txtfile = "../dataset/2.0_cases_cleaned.csv.gz"
     data = pd.read_csv(txtfile)
 
-    '''
+    to_encode = ['sex', 'province', 'country', 'outcome']
     le = LabelEncoder()
-    le.fit(data['sex'].astype(str))
-    data['sex'] = le.transform(data['sex'].astype(str))
-    print(data['sex'])
+    for i in range(len(to_encode)):
+        data[to_encode[i]] = le.fit_transform(data[to_encode[i]].astype(str))
     
-    test = pd.get_dummies(data['sex'])
-    print(test)
-    '''
     X = data
     y = data['outcome'].to_numpy()
     X_train, X_valid, y_train, y_valid = train_test_split(X, y, test_size = 0.2)
@@ -38,7 +34,7 @@ def main():
         KNeighborsClassifier(n_neighbors=20)
         )  
     
-    #nb_model.fit(X_train, y_train)
+    nb_model.fit(X_train, y_train)
     #print("Validation score:", nb_model.score(X_valid, y_valid))  
     
 if __name__ == '__main__':
