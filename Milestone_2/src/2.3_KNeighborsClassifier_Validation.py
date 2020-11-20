@@ -23,7 +23,8 @@ def main():
     )
     knn_model.fit(X_train, y_train)
 
-    print("Validation score (KNN):", knn_model.score(X_valid, y_valid))
+    print("Validation score (KNN, train):", knn_model.score(X_train, y_train))
+    print("Validation score (KNN, test):", knn_model.score(X_valid, y_valid))
 
 if __name__ == '__main__':
     main()
