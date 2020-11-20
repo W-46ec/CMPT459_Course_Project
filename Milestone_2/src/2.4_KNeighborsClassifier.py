@@ -15,7 +15,6 @@ def main():
         data[to_encode[i]] = le.fit_transform(data[to_encode[i]].astype(str))    
     target = pd.Series(data['outcome'].to_numpy())    
     
-    
     X_train_inputfile = "../dataset/2.1_X_train.csv.gz"
     X_valid_inputfile = "../dataset/2.1_X_valid.csv.gz"
     y_train_inputfile = "../dataset/2.1_y_train.csv.gz"
@@ -28,15 +27,16 @@ def main():
 
     # classify with KNN model
     knn_model = make_pipeline(
-        KNeighborsClassifier()
+        KNeighborsClassifier(n_neighbors=1000, algorithm = 'ball_tree', leaf_size = 100)
     )
     knn_model.fit(X_train, y_train)
-
-    scores = cross_val_score(knn_model, data, target, cv=5)
-    print("Cross validation avg score: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
-
+    
+    scores = cross_val_score(knn_model, data, target, cv=3)
+    print("Cross validation avg score (KNN): %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+    
     print("Validation score (KNN, train):", knn_model.score(X_train, y_train))
     print("Validation score (KNN, test):", knn_model.score(X_valid, y_valid))
+
 
 if __name__ == '__main__':
     main()

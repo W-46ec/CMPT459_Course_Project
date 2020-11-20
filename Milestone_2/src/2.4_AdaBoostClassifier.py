@@ -31,11 +31,13 @@ def main():
     )
     ada_model.fit(X_train, y_train)
     
-    scores = cross_val_score(ada_model, data, target, cv=5)
-    print("Cross validation avg score: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
-
     print("Validation score (ADA, train):", ada_model.score(X_train, y_train))
     print("Validation score (ADA, test):", ada_model.score(X_valid, y_valid))
+    
+    scores = cross_val_score(ada_model, data, target, cv=5)
+    print("Cross validation avg score (ADA): %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+    
+    
 
 if __name__ == '__main__':
     main()

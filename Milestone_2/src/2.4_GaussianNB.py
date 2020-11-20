@@ -26,11 +26,11 @@ def main():
     nb_pkl = '../models/nb_classifier.pkl'
     nb_model = pickle.load(open(nb_pkl, 'rb'))
     
-    scores = cross_val_score(nb_model, data, target, cv=5)
-    print("Cross validation avg score: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
-    
     print("Validation score (NB, train):", nb_model.score(X_train, y_train))
     print("Validation score (NB, test):", nb_model.score(X_valid, y_valid))
+
+    scores = cross_val_score(nb_model, data, target, cv=5)
+    print("Cross validation avg score: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
 
 if __name__ == '__main__':
     main()
