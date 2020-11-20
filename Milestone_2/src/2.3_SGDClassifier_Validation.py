@@ -2,6 +2,7 @@
 import numpy as np
 import pandas as pd
 import pickle
+from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score
 
 def main():
     X_train_inputfile = "../dataset/2.1_X_train.csv.gz"
@@ -17,9 +18,21 @@ def main():
     sgd_pkl = '../models/sgd_classifier.pkl'
     sgd_model = pickle.load(open(sgd_pkl, 'rb'))
 
-    print("Validation score (SGD, train):", sgd_model.score(X_train, y_train))
-    print("Validation score (SGD, test):", sgd_model.score(X_valid, y_valid))
-    
+    prediction_train = sgd_model.predict(X_train)
+    prediction_valid = sgd_model.predict(X_valid)
+
+    print("Accuracy score (SGD, train):", round(accuracy_score(y_train, prediction_train), 4))
+    print("Accuracy score (SGD, test):", round(accuracy_score(y_train, prediction_train), 4))
+
+    print("Precision score (SGD, train):", round(precision_score(y_train, prediction_train, average = 'weighted'), 4))
+    print("Precision score (SGD, test):", round(precision_score(y_train, prediction_train, average = 'weighted'), 4))
+
+    print("Recall score (SGD, train):", round(recall_score(y_train, prediction_train, average = 'weighted'), 4))
+    print("Recall score (SGD, test):", round(recall_score(y_valid, prediction_valid, average = 'weighted'), 4))
+
+    print("F score (SGD, train):", round(f1_score(y_train, prediction_train, average = 'weighted'), 4))
+    print("F score (SGD, test):", round(f1_score(y_valid, prediction_valid, average = 'weighted'), 4))
+
     
 if __name__ == '__main__':
     main()
