@@ -18,12 +18,8 @@ def main():
     y_train = pd.read_csv(y_train_inputfile).transpose().values[0]
     y_valid = pd.read_csv(y_valid_inputfile).transpose().values[0]
 
-    # classify with KNN model
-    knn_model = make_pipeline(
-        KNeighborsClassifier()
-    )
-
-    knn_model.fit(X_train, y_train)
+    knn_pkl = '../models/knn_classifier.pkl'
+    knn_model = pickle.load(open(knn_pkl, 'rb'))
 
     prediction_train = knn_model.predict(X_train)
     prediction_valid = knn_model.predict(X_valid)
