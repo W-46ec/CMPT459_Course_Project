@@ -2,9 +2,6 @@
 import numpy as np
 import pandas as pd
 import pickle
-from sklearn.pipeline import make_pipeline
-from sklearn.naive_bayes import GaussianNB
-
 
 def main():
     X_train_inputfile = "../dataset/2.1_X_train.csv.gz"
@@ -17,14 +14,12 @@ def main():
     y_train = pd.read_csv(y_train_inputfile).transpose().values[0]
     y_valid = pd.read_csv(y_valid_inputfile).transpose().values[0]
 
-    # classify with Gaussian Naive Bayes model
-    nb_model = make_pipeline(
-        GaussianNB()
-    )
-    nb_model.fit(X_train, y_train)
-    
-    nb_pkl = '../models/nb_classifier.pkl'
-    pickle.dump(nb_model, open(nb_pkl, 'wb'))
+    sgd_pkl = '../models/sgd_classifier.pkl'
+    sgd_model = pickle.load(open(sgd_pkl, 'rb'))
 
+    print("Validation score (SGD, train):", sgd_model.score(X_train, y_train))
+    print("Validation score (SGD, test):", sgd_model.score(X_valid, y_valid))
+    
+    
 if __name__ == '__main__':
     main()

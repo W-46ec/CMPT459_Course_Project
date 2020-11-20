@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import pickle
 from sklearn.pipeline import make_pipeline
-from sklearn.naive_bayes import GaussianNB
+from sklearn.linear_model import SGDClassifier
 
 
 def main():
@@ -17,14 +17,15 @@ def main():
     y_train = pd.read_csv(y_train_inputfile).transpose().values[0]
     y_valid = pd.read_csv(y_valid_inputfile).transpose().values[0]
 
-    # classify with Gaussian Naive Bayes model
-    nb_model = make_pipeline(
-        GaussianNB()
+    # classify with Stochastic Gradient Descent model
+    sgd_model = make_pipeline(
+        SGDClassifier()
     )
-    nb_model.fit(X_train, y_train)
+    sgd_model.fit(X_train, y_train)
     
-    nb_pkl = '../models/nb_classifier.pkl'
-    pickle.dump(nb_model, open(nb_pkl, 'wb'))
-
+    sgd_pkl = '../models/sgd_classifier.pkl'
+    pickle.dump(sgd_model, open(sgd_pkl, 'wb'))
+    
+    
 if __name__ == '__main__':
     main()
