@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import scipy.stats as stats
+from scipy.stats import randint
 from time import time
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import RandomizedSearchCV
@@ -29,9 +30,11 @@ def main():
     y_valid = pd.read_csv(y_valid_inputfile).transpose().values[0]
 
     knn_model = KNeighborsClassifier(algorithm = 'auto')
-    param_dist = {'n_neighbors': stats.uniform(5,200),
-                  'weights': ['uniform', 'distance'],
-                  'leaf_size': stats.uniform(10,100)}
+    param_dist = {
+        'n_neighbors': randint(5, 201), 
+        'weights': ['uniform', 'distance'], 
+        'leaf_size': randint(10, 101)
+    }
     n_iter_search = 10
     random_search = RandomizedSearchCV(knn_model, param_distributions = param_dist, n_iter = n_iter_search)
     start = time()
