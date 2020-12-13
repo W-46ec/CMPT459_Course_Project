@@ -7,7 +7,7 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.metrics import make_scorer, accuracy_score, recall_score
 
-def report(results, n_top=5):
+def report(results, n_top=2):
     for i in range(1, n_top + 1):
         candidates = np.flatnonzero(results['rank_test_score'] == i)
         for candidate in candidates:
@@ -33,9 +33,13 @@ def main():
         'learning_rate': stats.uniform(0.001, 1),
         'algorithm': ['SAMME', 'SAMME.R']
     }
-    n_iter_search = 10
+    n_iter_search = 2
+    scoring = {'Accuracy': make_scorer(accuracy_score),
+            'Recall': make_scorer(lambda y, y_pred, **kwargs:
+                    recall_score(y, y_pred, average = 'weighted'))
+            }
     random_search = RandomizedSearchCV(ada_model, param_distributions=param_dist, n_iter=n_iter_search, 
-                    n_jobs=-1, pre_dispatch='2*n_jobs')
+                    n_jobs=-1, pre_dispatch='2*n_jobs', scoring=scoring, refit=False)
     start = time()
     random_search.fit(X_train, y_train)
     print("RandomizedSearchCV took %.2f seconds for %d candidates"
