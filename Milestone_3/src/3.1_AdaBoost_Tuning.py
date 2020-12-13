@@ -6,6 +6,7 @@ from time import time
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.metrics import make_scorer, accuracy_score, recall_score
+from pprint import pprint
 
 def report(results, n_top=2):
     for i in range(1, n_top + 1):
@@ -39,12 +40,13 @@ def main():
                     recall_score(y, y_pred, average = 'weighted'))
             }
     random_search = RandomizedSearchCV(ada_model, param_distributions=param_dist, n_iter=n_iter_search, 
-                    n_jobs=-1, pre_dispatch='2*n_jobs', scoring=scoring, refit=False)
+                    n_jobs=-1, pre_dispatch='2*n_jobs', scoring=scoring, refit='Recall')
     start = time()
     random_search.fit(X_train, y_train)
     print("RandomizedSearchCV took %.2f seconds for %d candidates"
           " parameter settings." % ((time() - start), n_iter_search))
-    report(random_search.cv_results_)
+    #report(random_search.cv_results_)
+    pprint(random_search.cv_results_)
 
 if __name__ == '__main__':
     main()
