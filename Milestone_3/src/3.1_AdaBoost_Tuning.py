@@ -8,16 +8,16 @@ from sklearn.model_selection import RandomizedSearchCV
 from sklearn.metrics import make_scorer, accuracy_score, recall_score
 from pprint import pprint
 
-def report(results, n_top=2):
+def report(results, n_top = 2):
     for i in range(1, n_top + 1):
-        candidates = np.flatnonzero(results['rank_test_score'] == i)
+        candidates = np.flatnonzero(results['rank_test_Accuracy'] == i)
         for candidate in candidates:
             print("Model with rank: {0}".format(i))
-            print("Mean validation score: {0:.3f}".format(results['mean_test_score'][candidate]))
-            #print("Mean validation recall: {0:.3f}".format(results['mean_test_recall'][candidate]))           
+            print("Mean validation score: {0:.3f}".format(results['mean_test_Accuracy'][candidate]))
+            print("Mean validation recall: {0:.3f}".format(results['mean_test_Recall'][candidate]))
             print("Parameters: {0}".format(results['params'][candidate]))
             print("")
-            
+
 def main():
     X_train_inputfile = "../dataset/3.1_X_train.csv.gz"
     X_valid_inputfile = "../dataset/3.1_X_valid.csv.gz"
@@ -29,24 +29,37 @@ def main():
     y_valid = pd.read_csv(y_valid_inputfile).transpose().values[0]
 
     ada_model = AdaBoostClassifier()
+
     param_dist = {
-        'n_estimators': randint(50, 300),
+        'n_estimators': randint(50, 301),
         'learning_rate': stats.uniform(0.001, 1),
         'algorithm': ['SAMME', 'SAMME.R']
     }
     n_iter_search = 2
-    scoring = {'Accuracy': make_scorer(accuracy_score),
-            'Recall': make_scorer(lambda y, y_pred, **kwargs:
-                    recall_score(y, y_pred, average = 'weighted'))
-            }
-    random_search = RandomizedSearchCV(ada_model, param_distributions=param_dist, n_iter=n_iter_search, 
-                    n_jobs=-1, pre_dispatch='2*n_jobs', scoring=scoring, refit='Recall')
+    scoring = {
+        'Accuracy': make_scorer(accuracy_score), 
+        'Recall': make_scorer(
+            lambda y, y_pred, **kwargs: 
+                recall_score(y, y_pred, average = 'micro')
+        )
+    }
+
+    random_search = RandomizedSearchCV(
+        ada_model, 
+        param_distributions = param_dist, 
+        n_iter = n_iter_search, 
+        n_jobs = -1, 
+        pre_dispatch = '2*n_jobs', 
+        scoring = scoring, 
+        refit = 'Recall'
+    )
+
     start = time()
     random_search.fit(X_train, y_train)
     print("RandomizedSearchCV took %.2f seconds for %d candidates"
           " parameter settings." % ((time() - start), n_iter_search))
-    #report(random_search.cv_results_)
-    pprint(random_search.cv_results_)
+    report(random_search.cv_results_)
+
 
 if __name__ == '__main__':
     main()
