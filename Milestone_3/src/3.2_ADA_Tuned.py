@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-from sklearn.pipeline import make_pipeline
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score
 
@@ -15,9 +14,7 @@ def main():
     y_valid = pd.read_csv(y_valid_inputfile).transpose().values[0]
 
     # classify with ADABoost
-    ada_model = make_pipeline(
-        AdaBoostClassifier(n_estimators=229, algorithm='SAMME', learning_rate=0.850936)
-    )
+    ada_model = AdaBoostClassifier(n_estimators=229, algorithm='SAMME', learning_rate=0.850936)
     ada_model.fit(X_train, y_train)
 
     # predict on test dataset

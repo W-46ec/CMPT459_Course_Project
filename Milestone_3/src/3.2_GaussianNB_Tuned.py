@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-from sklearn.pipeline import make_pipeline
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score
 
@@ -15,9 +14,7 @@ def main():
     y_valid = pd.read_csv(y_valid_inputfile).transpose().values[0]
 
     # classify with Gaussian Naive Bayes
-    nb_model = make_pipeline(
-        GaussianNB()
-    )
+    nb_model = GaussianNB()
     nb_model.fit(X_train, y_train)
 
     # predict on test dataset
