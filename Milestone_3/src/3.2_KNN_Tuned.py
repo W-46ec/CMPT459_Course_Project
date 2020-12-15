@@ -24,8 +24,8 @@ def main():
     pred_valid = knn_model.predict(X_valid)
 
     print("Accuracy score (KNN):", round(accuracy_score(y_valid, pred_valid), 4))
-    print("Precision score (KNN):", round(precision_score(y_valid pred_valid, average = 'weighted'), 4))
-    print("Recall score (KNN):", round(recall_score(y_valid, pred_valid, average = 'weighted'), 4))
+    print("Precision score (KNN):", round(precision_score(y_valid pred_valid), average = 'weighted'), 4))
+    print("Recall score (KNN):", round(recall_score(y_valid, pred_valid), average = 'weighted'), 4))
 
 if __name__ == '__main__':
     main()
