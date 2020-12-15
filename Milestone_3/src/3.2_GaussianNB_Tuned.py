@@ -3,6 +3,16 @@ import pandas as pd
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score
 
+def _recall_on_deceased(y, y_pred, **kwargs):
+        y_series = pd.Series(y)
+        y_deceased = y_series[y_series == 0]
+        y_pred_deceased = pd.Series(y_pred)[y_deceased.index]
+        return recall_score(
+            y_true = y_deceased, 
+            y_pred = y_pred_deceased, 
+            average = 'micro'
+        )
+
 def main():
     X_train_inputfile = "../dataset/3.1_X_train.csv.gz"
     X_valid_inputfile = "../dataset/3.1_X_valid.csv.gz"
@@ -23,6 +33,7 @@ def main():
     print("Accuracy score (Gauss. NB):", round(accuracy_score(y_valid, pred_valid), 4))
     print("Precision score (Gauss. NB):", round(precision_score(y_valid, pred_valid, average = 'weighted'), 4))
     print("Recall score (Gauss. NB):", round(recall_score(y_valid, pred_valid, average = 'weighted'), 4))
+    print("Recall score on 'deceased' (Gauss. NB):", round(_recall_on_deceased(y_valid, pred_valid), 4))
 
 if __name__ == '__main__':
     main()
