@@ -24,7 +24,7 @@ def main():
     pred_valid = ada_model.predict(X_valid)
 
     print("Accuracy score (ADA):", round(accuracy_score(y_valid, pred_valid),4))
-    print("Precision score (ADA):", round(precision_score(y_valid pred_valid, average = 'weighted'), 4))
+    print("Precision score (ADA):", round(precision_score(y_valid, pred_valid, average = 'weighted'), 4))
     print("Recall score (ADA):", round(recall_score(y_valid, pred_valid, average = 'weighted'), 4))
 
 if __name__ == '__main__':

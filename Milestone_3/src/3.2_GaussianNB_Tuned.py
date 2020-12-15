@@ -24,8 +24,8 @@ def main():
     pred_valid = nb_model.predict(X_valid)
 
     print("Accuracy score (Gauss. NB):", round(accuracy_score(y_valid, pred_valid), 4))
-    print("Precision score (Gauss. NB):", round(precision_score(y_valid pred_valid), average = 'weighted'), 4))
-    print("Recall score (Gauss. NB):", round(recall_score(y_valid, pred_valid, average) = 'weighted'), 4))
+    print("Precision score (Gauss. NB):", round(precision_score(y_valid, pred_valid, average = 'weighted'), 4))
+    print("Recall score (Gauss. NB):", round(recall_score(y_valid, pred_valid, average = 'weighted'), 4))
 
 if __name__ == '__main__':
     main()
