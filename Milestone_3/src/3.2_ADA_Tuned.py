@@ -16,7 +16,7 @@ def main():
 
     # classify with ADABoost
     ada_model = make_pipeline(
-        AdaBoostClassifier(n_estimators=17, weights='distance', leaf_size=392)
+        AdaBoostClassifier(n_estimators=229, algorithm='SAMME', learning_rate=0.850936)
     )
     ada_model.fit(X_train, y_train)
 

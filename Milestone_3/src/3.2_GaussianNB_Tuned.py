@@ -14,7 +14,7 @@ def main():
     y_train = pd.read_csv(y_train_inputfile).transpose().values[0]
     y_valid = pd.read_csv(y_valid_inputfile).transpose().values[0]
 
-    # classify with ADABoost
+    # classify with Gaussian Naive Bayes
     nb_model = make_pipeline(
         GaussianNB()
     )
