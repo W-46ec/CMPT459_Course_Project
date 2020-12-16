@@ -1,0 +1,29 @@
+Model with rank: 1
+Accuracy: 0.736
+Overall recall: 0.736
+Recall on 'deceased': 0.049
+Parameters: {'base_estimator__max_depth': 87, 'learning_rate': 0.7059172808517837, 'n_estimators': 119}
+
+Model with rank: 2
+Accuracy: 0.738
+Overall recall: 0.738
+Recall on 'deceased': 0.049
+Parameters: {'base_estimator__max_depth': 198, 'learning_rate': 0.13262494788621962, 'n_estimators': 104}
+
+Model with rank: 3
+Accuracy: 0.738
+Overall recall: 0.738
+Recall on 'deceased': 0.049
+Parameters: {'base_estimator__max_depth': 146, 'learning_rate': 0.2214340755857919, 'n_estimators': 51}
+
+Model with rank: 4
+Accuracy: 0.737
+Overall recall: 0.737
+Recall on 'deceased': 0.048
+Parameters: {'base_estimator__max_depth': 192, 'learning_rate': 0.8548604398687231, 'n_estimators': 213}
+
+Model with rank: 5
+Accuracy: 0.740
+Overall recall: 0.740
+Recall on 'deceased': 0.047
+Parameters: {'base_estimator__max_depth': 138, 'learning_rate': 1.042908023887684, 'n_estimators': 53}

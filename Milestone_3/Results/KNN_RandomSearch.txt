@@ -1,0 +1,35 @@
+Model with rank: 1
+Accuracy: 0.768
+Overall recall: 0.768
+Recall on 'deceased': 0.017
+Parameters: {'leaf_size': 329, 'n_neighbors': 5}
+
+Model with rank: 2
+Accuracy: 0.781
+Overall recall: 0.781
+Recall on 'deceased': 0.016
+Parameters: {'leaf_size': 193, 'n_neighbors': 6}
+
+Model with rank: 2
+Accuracy: 0.781
+Overall recall: 0.781
+Recall on 'deceased': 0.016
+Parameters: {'leaf_size': 98, 'n_neighbors': 6}
+
+Model with rank: 4
+Accuracy: 0.775
+Overall recall: 0.775
+Recall on 'deceased': 0.012
+Parameters: {'leaf_size': 151, 'n_neighbors': 7}
+
+Model with rank: 5
+Accuracy: 0.788
+Overall recall: 0.788
+Recall on 'deceased': 0.010
+Parameters: {'leaf_size': 152, 'n_neighbors': 12}
+
+Model with rank: 5
+Accuracy: 0.788
+Overall recall: 0.788
+Recall on 'deceased': 0.010
+Parameters: {'leaf_size': 494, 'n_neighbors': 12}
