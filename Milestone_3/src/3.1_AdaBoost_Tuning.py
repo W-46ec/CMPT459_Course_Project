@@ -8,13 +8,14 @@ from sklearn.model_selection import RandomizedSearchCV
 from sklearn.metrics import make_scorer, accuracy_score, recall_score
 from pprint import pprint
 
-def report(results, n_top = 2):
+def report(results, n_top = 5):
     for i in range(1, n_top + 1):
-        candidates = np.flatnonzero(results['rank_test_Accuracy'] == i)
+        candidates = np.flatnonzero(results['rank_test_Recall_on_deceased'] == i)
         for candidate in candidates:
             print("Model with rank: {0}".format(i))
-            print("Mean validation score: {0:.3f}".format(results['mean_test_Accuracy'][candidate]))
-            print("Mean validation recall: {0:.3f}".format(results['mean_test_Recall'][candidate]))
+            print("Accuracy: {0:.3f}".format(results['mean_test_Accuracy'][candidate]))
+            print("Overall recall: {0:.3f}".format(results['mean_test_Recall'][candidate]))
+            print("Recall on 'deceased': {0:.3f}".format(results['mean_test_Recall_on_deceased'][candidate]))
             print("Parameters: {0}".format(results['params'][candidate]))
             print("")
 
@@ -28,30 +29,39 @@ def main():
     y_train = pd.read_csv(y_train_inputfile).transpose().values[0]
     y_valid = pd.read_csv(y_valid_inputfile).transpose().values[0]
 
-    ada_model = AdaBoostClassifier()
-
+    dtree = DecisionTreeClassifier()
+    ada_model = AdaBoostClassifier(base_estimator=dtree)
     param_dist = {
-        'n_estimators': randint(50, 301),
-        'learning_rate': stats.uniform(0.001, 1),
-        'algorithm': ['SAMME', 'SAMME.R']
+        "base_estimator__max_depth" : randint(50,200),
+        "n_estimators": randint(50, 300),
+        "learning_rate": stats.uniform(0.1, 1)
     }
-    n_iter_search = 2
+    n_iter_search = 50
+
     scoring = {
         'Accuracy': make_scorer(accuracy_score), 
         'Recall': make_scorer(
-            lambda y, y_pred, **kwargs: 
-                recall_score(y, y_pred, average = 'micro')
+            lambda y, y_pred, **kwargs:
+                recall_score(
+                    y_true = y, 
+                    y_pred = y_pred, 
+                    average = 'micro'
+                )
+        ), 
+        'Recall_on_deceased': make_scorer(
+            lambda y, y_pred, **kwargs:
+                _recall_on_deceased(y, y_pred, **kwargs)
         )
     }
-
+    
     random_search = RandomizedSearchCV(
         ada_model, 
         param_distributions = param_dist, 
         n_iter = n_iter_search, 
-        n_jobs = -1, 
-        pre_dispatch = '2*n_jobs', 
+        n_jobs = -1,
+        pre_dispatch='2*n_jobs',
         scoring = scoring, 
-        refit = 'Recall'
+        refit = 'Recall_on_deceased'
     )
 
     start = time()

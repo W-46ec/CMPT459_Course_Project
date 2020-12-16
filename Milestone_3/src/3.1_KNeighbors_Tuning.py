@@ -10,16 +10,43 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import recall_score
 #from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score
 
-def report(results, n_top=5):
+def report(results, n_top = 5):
     for i in range(1, n_top + 1):
-        candidates = np.flatnonzero(results['rank_test_score'] == i)
+        candidates = np.flatnonzero(results['rank_test_Recall_on_deceased'] == i)
         for candidate in candidates:
             print("Model with rank: {0}".format(i))
-            print("Mean validation score: {0:.3f}".format(results['mean_test_score'][candidate]))
-            print("Mean validation recall: {0:.3f}".format(results['mean_test_recall'][candidate]))           
+            print("Accuracy: {0:.3f}".format(results['mean_test_Accuracy'][candidate]))
+            print("Overall recall: {0:.3f}".format(results['mean_test_Recall'][candidate]))
+            print("Recall on 'deceased': {0:.3f}".format(results['mean_test_Recall_on_deceased'][candidate]))
             print("Parameters: {0}".format(results['params'][candidate]))
             print("")
-            
+
+def _recall_on_deceased(y, y_pred, **kwargs):
+    y_series = pd.Series(y)
+    y_deceased = y_series[y_series == 0]
+    y_pred_deceased = pd.Series(y_pred)[y_deceased.index]
+    return recall_score(
+        y_true = y_deceased, 
+        y_pred = y_pred_deceased, 
+        average = 'micro'
+    )
+
+scoring = {
+    'Accuracy': make_scorer(accuracy_score), 
+    'Recall': make_scorer(
+        lambda y, y_pred, **kwargs:
+            recall_score(
+                y_true = y, 
+                y_pred = y_pred, 
+                average = 'micro'
+            )
+    ), 
+    'Recall_on_deceased': make_scorer(
+        lambda y, y_pred, **kwargs:
+            _recall_on_deceased(y, y_pred, **kwargs)
+    )
+}
+
 def main():
     X_train_inputfile = "../dataset/3.1_X_train.csv.gz"
     X_valid_inputfile = "../dataset/3.1_X_valid.csv.gz"
@@ -32,14 +59,34 @@ def main():
 
     knn_model = KNeighborsClassifier(algorithm = 'auto')
     param_dist = {
-        'n_neighbors': randint(10, 1000),
-        'weights': ['uniform', 'distance'],
-        'leaf_size': randint(10, 1000)
+        'n_neighbors': randint(5, 100),
+        'leaf_size': randint(10, 500)
     }
-    n_iter_search = 10
-    scoring = {'Accuracy': make_scorer(accuracy_score), 'Recall': make_scorer(recall_score)}
-    random_search = RandomizedSearchCV(knn_model, param_distributions=param_dist, n_iter=n_iter_search, 
-                    n_jobs=-1, pre_dispatch='2*n_jobs', scoring=scoring, refit=False)
+    n_iter_search = 50
+    
+    scoring = {
+        'Accuracy': make_scorer(accuracy_score), 
+        'Recall': make_scorer(
+            lambda y, y_pred, **kwargs:
+                recall_score(
+                    y_true = y, 
+                    y_pred = y_pred, 
+                    average = 'micro'
+                )
+        ), 
+        'Recall_on_deceased': make_scorer(
+            lambda y, y_pred, **kwargs:
+                _recall_on_deceased(y, y_pred, **kwargs)
+        )
+    }
+
+    random_search = RandomizedSearchCV(
+        knn_model, 
+        param_distributions = param_dist, 
+        n_iter = n_iter_search,
+        scoring = scoring, 
+        refit = 'Recall_on_deceased'
+    )
     start = time()
     random_search.fit(X_train, y_train)
     print("RandomizedSearchCV took %.2f seconds for %d candidates"
