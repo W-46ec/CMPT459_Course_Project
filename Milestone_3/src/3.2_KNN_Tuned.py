@@ -24,7 +24,7 @@ def main():
     y_valid = pd.read_csv(y_valid_inputfile).transpose().values[0]
 
     # classify with K Nearest Neighbors
-    knn_model = KNeighborsClassifier(n_neighbors=17, weights='distance', leaf_size=392)
+    knn_model = KNeighborsClassifier(n_neighbors=6, leaf_size=329)
     knn_model.fit(X_train, y_train)
 
     # predict on test dataset
