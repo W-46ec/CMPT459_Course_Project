@@ -24,7 +24,11 @@ def main():
     y_valid = pd.read_csv(y_valid_inputfile).transpose().values[0]
 
     # classify with SGD
-    sgd_model = SGDClassifier(loss='modified_huber', penalty='l2', max_iter=175)
+    sgd_model = SGDClassifier(
+        loss = 'modified_huber', 
+        penalty = 'l2', 
+        max_iter = 175
+    )
     sgd_model.fit(X_train, y_train)
 
     # predict on test dataset

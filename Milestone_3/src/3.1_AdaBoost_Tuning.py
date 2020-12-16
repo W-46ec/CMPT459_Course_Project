@@ -3,10 +3,23 @@ import pandas as pd
 import scipy.stats as stats
 from scipy.stats import randint
 from time import time
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import AdaBoostClassifier
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.metrics import make_scorer, accuracy_score, recall_score
 from pprint import pprint
+
+# Customized scoring function to compute recall on class 'deceased'
+def _recall_on_deceased(y, y_pred, **kwargs):
+        y_series = pd.Series(y)
+        y_deceased = y_series[y_series == 0]
+        y_pred_deceased = pd.Series(y_pred)[y_deceased.index]
+        return recall_score(
+            y_true = y_deceased, 
+            y_pred = y_pred_deceased, 
+            average = 'micro'
+        )
 
 def report(results, n_top = 5):
     for i in range(1, n_top + 1):
@@ -30,14 +43,20 @@ def main():
     y_valid = pd.read_csv(y_valid_inputfile).transpose().values[0]
 
     dtree = DecisionTreeClassifier()
-    ada_model = AdaBoostClassifier(base_estimator=dtree)
+    ada_model = AdaBoostClassifier(
+        base_estimator = dtree
+    )
+
     param_dist = {
-        "base_estimator__max_depth" : randint(50,200),
+        "base_estimator__max_depth" : randint(50, 200),
         "n_estimators": randint(50, 300),
         "learning_rate": stats.uniform(0.1, 1)
     }
+
+    # Number of iterations
     n_iter_search = 50
 
+    # Scoring metrics
     scoring = {
         'Accuracy': make_scorer(accuracy_score), 
         'Recall': make_scorer(
@@ -58,8 +77,8 @@ def main():
         ada_model, 
         param_distributions = param_dist, 
         n_iter = n_iter_search, 
-        n_jobs = -1,
-        pre_dispatch='2*n_jobs',
+        n_jobs = -1, 
+        pre_dispatch='2*n_jobs', 
         scoring = scoring, 
         refit = 'Recall_on_deceased'
     )
@@ -68,6 +87,8 @@ def main():
     random_search.fit(X_train, y_train)
     print("RandomizedSearchCV took %.2f seconds for %d candidates"
           " parameter settings." % ((time() - start), n_iter_search))
+    
+    # Print out results
     report(random_search.cv_results_)
 
 

@@ -23,10 +23,15 @@ def main():
     y_train = pd.read_csv(y_train_inputfile).transpose().values[0]
     y_valid = pd.read_csv(y_valid_inputfile).transpose().values[0]
 
-    dtree = DecisionTreeClassifier(max_depth=87)
+    dtree = DecisionTreeClassifier(max_depth = 87)
 
     # classify with ADABoost
-    ada_model = AdaBoostClassifier(base_estimator=dtree, n_estimators=119, learning_rate=0.70591)
+    ada_model = AdaBoostClassifier(
+        base_estimator = dtree, 
+        n_estimators = 119, 
+        learning_rate = 0.70591
+    )
+
     ada_model.fit(X_train, y_train)
 
     # predict on test dataset

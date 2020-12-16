@@ -8,13 +8,25 @@ from sklearn.model_selection import RandomizedSearchCV
 from sklearn.metrics import make_scorer, accuracy_score, recall_score
 from pprint import pprint
 
-def report(results, n_top = 2):
+# Customized scoring function to compute recall on class 'deceased'
+def _recall_on_deceased(y, y_pred, **kwargs):
+        y_series = pd.Series(y)
+        y_deceased = y_series[y_series == 0]
+        y_pred_deceased = pd.Series(y_pred)[y_deceased.index]
+        return recall_score(
+            y_true = y_deceased, 
+            y_pred = y_pred_deceased, 
+            average = 'micro'
+        )
+
+def report(results, n_top = 5):
     for i in range(1, n_top + 1):
-        candidates = np.flatnonzero(results['rank_test_Accuracy'] == i)
+        candidates = np.flatnonzero(results['rank_test_Recall_on_deceased'] == i)
         for candidate in candidates:
             print("Model with rank: {0}".format(i))
-            print("Mean validation score: {0:.3f}".format(results['mean_test_Accuracy'][candidate]))
-            print("Mean validation recall: {0:.3f}".format(results['mean_test_Recall'][candidate]))
+            print("Accuracy: {0:.3f}".format(results['mean_test_Accuracy'][candidate]))
+            print("Overall recall: {0:.3f}".format(results['mean_test_Recall'][candidate]))
+            print("Recall on 'deceased': {0:.3f}".format(results['mean_test_Recall_on_deceased'][candidate]))
             print("Parameters: {0}".format(results['params'][candidate]))
             print("")
 
